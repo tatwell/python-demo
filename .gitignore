@@ -13,4 +13,5 @@
 /tmp
 
 # Project excludes
+.dev
 app-engine/.python-version
