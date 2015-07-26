@@ -2,6 +2,8 @@
 # Imports
 #
 from os.path import dirname, join
+import arrow
+import dateutil
 
 from flask import Flask, render_template, jsonify
 
@@ -30,16 +32,32 @@ def main_index():
 # Arrow API
 # Mainly to test fix for this issue:
 #
-@app.route('/arrow/version', methods=['GET'])
+@app.route('/arrow/version')
 def arrow_version():
-    import arrow
-    import dateutil
-
     return jsonify({
         'arrow': arrow.VERSION,
         'dateutil': dateutil.__version__
     })
 
+@app.route('/arrow/now')
+@app.route('/arrow/now/<timezone>')
+def arrow_now(timezone=None):
+    now = arrow.utcnow()
+    json_data = {
+        'now': str(now),
+        'timezone': 'UTC'
+    }
+
+    if timezone:
+        timezone = timezone.replace('-', '/')
+        json_data['timezone'] = timezone
+        try:
+            json_data['now'] = str(now.to(timezone))
+        except arrow.parser.ParserError, e:
+            json_data['now'] = None
+            json_data['error'] = str(e)
+
+    return jsonify(json_data)
 
 #
 # Exception Handlers
