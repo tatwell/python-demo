@@ -9,15 +9,25 @@
 The Flask App Engine application is based on the [GoogleCloudPlatform Flask App Engine
 skeleton](https://github.com/GoogleCloudPlatform/appengine-python-flask-skeleton).
 
-To install, first install the [Google App Engine
-SDK](https://cloud.google.com/appengine/downloads), then clone this repository:
+To install:
+
+1. Install the [Google App Engine Python SDK](https://cloud.google.com/appengine/downloads).
+
+2. Clone this repository:
+
+    git clone https://github.com/tatwell/python-demo.git python-demo
+
+3. Install the required libraries using Pip:
+
+    cd python-demo/app-engine
+    pip install -r requirements.txt -t lib
 
 
 ## Development Server
 
 To launch the local development server:
 
-    dev_appserver.py --port=3000 --admin_port=3001 --api_port=3002 .
+    dev_appserver.py --port=3000 --admin_port=3001 --api_port=3002 ./app-engine
 
 Application will run on [http://localhost:3000](http://localhost:3000).
 
@@ -31,4 +41,4 @@ No tests yet.
 
 To deploy the App Engine application:
 
-    appcfg.py --oauth2 -A python-demo -e YOUR_USER_NAME update .
+    appcfg.py --oauth2 -A python-demo -e YOUR_USER_NAME update ./app-engine
