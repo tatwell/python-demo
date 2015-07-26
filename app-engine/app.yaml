@@ -1,0 +1,37 @@
+# This file specifies your Python application's runtime configuration
+# including URL routing, versions, static file uploads, etc. See
+# https://developers.google.com/appengine/docs/python/config/appconfig
+# for details.
+
+# default: production
+version: xl0d0dxr
+
+application: tatwell-python-demo
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+# Handlers define how to route requests to your application.
+# The script value is in the format <path.to.module>.<wsgi_application>
+# where <wsgi_application> is a WSGI application object.
+handlers:
+  
+  #
+  # Static directories
+  #
+- url: /assets
+  static_dir: assets
+  
+  #
+  # Default
+  #
+- url: .*
+  script: main.app
+
+# Third party libraries that are included in the App Engine SDK must be listed
+# here if you want to use them.  See
+# https://developers.google.com/appengine/docs/python/tools/libraries27 for
+# a list of libraries included in the SDK.
+#libraries:
+#- name: jinja2
+#  version: latest
