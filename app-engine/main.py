@@ -3,7 +3,7 @@
 #
 from os.path import dirname, join
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 
 
 #
@@ -26,6 +26,19 @@ app = Flask(__name__, template_folder=TEMPLATE_PATH)
 def main_index():
     """Home page."""
     return render_template('index.html')
+
+# Arrow API
+# Mainly to test fix for this issue:
+#
+@app.route('/arrow/version', methods=['GET'])
+def arrow_version():
+    import arrow
+    import dateutil
+
+    return jsonify({
+        'arrow': arrow.VERSION,
+        'dateutil': dateutil.__version__
+    })
 
 
 #
