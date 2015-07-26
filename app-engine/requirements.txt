@@ -5,3 +5,9 @@
 #
 # Note: The `lib` directory is added to `sys.path` by `appengine_config.py`.
 Flask==0.10
+
+# Arrow requires dateutil and dateutil > 1.5 requires subprocess module which App Engine
+# does not allow. So we peg dateutil here to 1.5.
+# See https://github.com/crsmithdev/arrow/issues/240
+arrow
+python-dateutil==1.5
