@@ -1,6 +1,7 @@
 """
     Subset Sum Functions
 """
+from collections import deque
 import time
 
 DEFAULT_PRECISION = .00001
@@ -39,11 +40,11 @@ def diophantine_subset_sum(number_list, target):
         return []
 
     # S = 1; Stack.1 = N T
-    stack_offset = 0
-    subset_stack = { stack_offset: [len(number_list)-1, target, ()] }
+    subset_queue = deque()
+    subset_queue.append((len(number_list)-1, target, ()))
 
     # do while S > 0
-    while stack_offset >= 0:
+    while subset_queue:
         #print cycles
         cycles += 1
         if cycles > CYCLE_LIMIT:
@@ -54,8 +55,7 @@ def diophantine_subset_sum(number_list, target):
             raise TimeoutError(runtime)
 
         # parse var Stack.S R T V; S = S - 1
-        offset, subtarget, subset = subset_stack[stack_offset]
-        stack_offset = stack_offset - 1
+        offset, subtarget, subset = subset_queue.popleft()
 
         # do K = 1 while Ls.K < T; end
         # Keeps only sums less than target
@@ -94,8 +94,7 @@ def diophantine_subset_sum(number_list, target):
                 break
 
             # Stack.S = (L - 1) (T - A.L) D
-            stack_offset += 1
-            subset_stack[stack_offset] = (new_offset-1, new_subtarget, new_subset)
+            subset_queue.append((new_offset-1, new_subtarget, new_subset))
 
     #say "Solution not exist"
     return []
