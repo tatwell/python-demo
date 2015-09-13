@@ -4,7 +4,7 @@
 import unittest
 from random import sample, randint
 
-from services.summer import diophantine_subset_sum
+from services.summer import diophantine_subset_sum, SummerTimeoutError
 
 
 class SummerServiceTest(unittest.TestCase):
@@ -33,3 +33,16 @@ class SummerServiceTest(unittest.TestCase):
 
         subset = diophantine_subset_sum(number_list, target)
         self.assertNotEqual(sum(subset), target, 'Cannot find subsets for negative values')
+
+    def test_should_raise_timeout_error(self):
+        from services import summer
+        original_time_limit = summer.TIME_LIMIT
+        summer.TIME_LIMIT = 0.05
+
+        number_list = [892850, -628472, 601815, 981126, 587199, -75114, 915490, -89326]
+        target = sum([892850, -628472, 601815, 981126, -1])
+
+        with self.assertRaises(SummerTimeoutError):
+            diophantine_subset_sum(number_list, target)
+            summer.TIME_LIMIT = original_time_limit
+
