@@ -8,28 +8,20 @@
 from handlers import app
 from flask import jsonify, render_template, request
 
+from forms.summer import SummerForm
 from services.summer import diophantine_subset_sum, SummerTimeoutError
 
 
 #
 # Action
 #
-@app.route('/summer', methods = ['GET'])
+@app.route('/summer', methods = ['GET', 'POST'])
 def index():
-    number_set = request.args.get('set', '')
-    target = request.args.get('sum')
+    form = SummerForm(request.form)
+    if request.method == 'POST' and form.validate():
+        subset = diophantine_subset_sum(form.numbers.data, form.target.data)
 
-    numbers = [int(n) for n in number_set.split(' ')]
-    target = int(target)
-
-    subset = diophantine_subset_sum(numbers, target)
-
-    # Render view
-    return jsonify({
-        'numbers': numbers,
-        'sum': target,
-        'subset': subset
-    })
+    return render_template('summer/index.html', form=form)
 
 #
 # Error Handlers
