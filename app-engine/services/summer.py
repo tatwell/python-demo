@@ -17,7 +17,7 @@ def diophantine_subset_sum(number_list, target):
     """
     started_at = time.time()
 
-    # Sort number list.
+    # Sort numbers list.
     number_list = sorted(number_list)
 
     # Build sums list.
