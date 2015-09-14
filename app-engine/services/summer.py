@@ -29,19 +29,18 @@ def diophantine_subset_sum(number_list, target):
     if number_list[0] > target or target > sums_list[-1]:
         return []
 
-    # Add first subset to subset queue.
-    subset_queue = deque()
-    subset_queue.append((len(number_list)-1, target, ()))
+    # Add first subset to subset stack.
+    subset_stack = [(len(number_list)-1, target, ())]
 
-    # Process subset queue.
-    while subset_queue:
+    # Process subset stack.
+    while subset_stack:
         # Enforce time constraint.
         runtime = time.time() - started_at
         if runtime > TIME_LIMIT:
             raise SummerTimeoutError(runtime)
 
         # Pop first subset off queue
-        offset, subtarget, subset = subset_queue.popleft()
+        offset, subtarget, subset = subset_stack.pop()
 
         # Keeps only sums less than subset target.
         sumlist_offset = 0
@@ -62,9 +61,8 @@ def diophantine_subset_sum(number_list, target):
 
         # Add subsets to queue for any number list values falling between sums list
         # offset and numbers list offset
-        step_start = min(sumlist_offset, offset)
-        step_end = max(sumlist_offset, offset) + 1
-        for new_offset in range(step_start, step_end):
+        step = (sumlist_offset <= offset) and 1 or -1
+        for new_offset in range(sumlist_offset, offset+step, step):
 
             new_subset = subset + tuple([number_list[new_offset]])
             new_subtarget = subtarget - number_list[new_offset]
@@ -72,7 +70,7 @@ def diophantine_subset_sum(number_list, target):
             if number_list[0] > new_subtarget:
                 break
 
-            subset_queue.append((new_offset-1, new_subtarget, new_subset))
+            subset_stack.append((new_offset-1, new_subtarget, new_subset))
 
     # Solution not found
     return []
