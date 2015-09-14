@@ -17,11 +17,14 @@ from services.summer import diophantine_subset_sum, SummerTimeoutError
 #
 @app.route('/summer', methods = ['GET', 'POST'])
 def index():
+    subset = None
+
     form = SummerForm(request.form)
     if request.method == 'POST' and form.validate():
         subset = diophantine_subset_sum(form.numbers.data, form.target.data)
+        subset = [format(v, ",d") for v in sorted(subset)]
 
-    return render_template('summer/index.html', form=form)
+    return render_template('summer/index.html', form=form, subset=subset)
 
 #
 # Error Handlers
