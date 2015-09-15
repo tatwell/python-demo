@@ -35,7 +35,8 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-        <button type="submit" class="{{ btn_class }}">{{ action_text }} </button>
+        <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
+        <a href="/summer" class="btn btn-default">Reset</a>
     </form>
 {%- endmacro %}
 
@@ -62,11 +63,15 @@
       <div class="well">{{ subset|join(' ') }}</div>
     {% else %}
       <p>
-        This webpage solves a simple form of the <a href="#">subset sum problem</a>.
-        Submit a list of numbers... Some caveats:
+        This webpage solves a simple form of the
+        <a href="https://en.wikipedia.org/wiki/Subset_sum_problem" target="_blank">
+        subset sum problem</a>. It implements the diophantine algorithm described
+        <a href="https://web.archive.org/web/20091018234158/http://geocities.com/SiliconValley/Garage/3323/aat/a_diop.html"
+           target="_blank">here</a>.
       </p>
+      <p>Some caveats:</p>
       <ul>
-        <li>Keep number list to 20 items or less.</li>
+        <li>Should be able to easily handle lists of 100 numbers or less.</li>
         <li>Runtime is limited to 2 seconds. So the longer your list, the greater the chance for a timeout.</li>
         <li>List and target should be positive integers.</li>
         <li>Returns first subset found.</li>

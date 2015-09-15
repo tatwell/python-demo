@@ -15,8 +15,8 @@ class SummerServiceTest(unittest.TestCase):
         subset = diophantine_subset_sum(number_list, target)
         self.assertEqual(sum(subset), target)
 
-    def test_should_find_subset_for_sets_with_twenty_or_less_positive_integers(self):
-        for size in range(5,20):
+    def test_should_find_subset_for_sets_with_hundred_or_less_positive_integers(self):
+        for size in range(5,100):
             subset_size = randint(1, size)
             number_list = [randint(0, 1000000) for num in range(size)]
             target_subset = sample(number_list, subset_size)
