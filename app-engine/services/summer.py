@@ -9,7 +9,7 @@ TIME_LIMIT = 2 # seconds
 class SummerRuntimeError(RuntimeError): pass
 class SummerTimeoutError(SummerRuntimeError): pass
 
-def diophantine_subset_sum(number_list, target):
+def diophantine_subset_sum(number_list, target, time_limit=TIME_LIMIT):
     """Takes a positive list of integers along with a target and returns a subset of
     numbers from list matching target. Implements diophantine linear algorithm described here:
 
@@ -36,8 +36,8 @@ def diophantine_subset_sum(number_list, target):
     while subset_stack:
         # Enforce time constraint.
         runtime = time.time() - started_at
-        if runtime > TIME_LIMIT:
-            raise SummerTimeoutError(runtime)
+        if runtime > time_limit:
+            raise SummerTimeoutError('No solution found in %d seconds.' % (time_limit))
 
         # Pop first subset off queue
         offset, subtarget, subset = subset_stack.pop()

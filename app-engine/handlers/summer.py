@@ -9,7 +9,7 @@ from handlers import app
 from flask import jsonify, render_template, request
 
 from forms.summer import SummerForm
-from services.summer import diophantine_subset_sum, SummerTimeoutError
+from services.summer import diophantine_subset_sum, SummerRuntimeError
 
 
 #
@@ -18,13 +18,17 @@ from services.summer import diophantine_subset_sum, SummerTimeoutError
 @app.route('/summer', methods = ['GET', 'POST'])
 def index():
     subset = None
+    error = None
 
     form = SummerForm(request.form)
     if request.method == 'POST' and form.validate():
-        subset = diophantine_subset_sum(form.numbers.data, form.target.data)
-        subset = [format(v, ",d") for v in sorted(subset)]
+        try:
+            subset = diophantine_subset_sum(form.numbers.data, form.target.data)
+            subset = [format(v, ',d') for v in sorted(subset)]
+        except SummerRuntimeError, e:
+            error = e
 
-    return render_template('summer/index.html', form=form, subset=subset)
+    return render_template('summer/index.html', form=form, subset=subset, error=error)
 
 #
 # Error Handlers

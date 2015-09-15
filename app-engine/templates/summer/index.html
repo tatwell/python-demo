@@ -40,16 +40,39 @@
 {%- endmacro %}
 
 {% block content %}
-    <h2>Subset Summer</h2>
+  <h2>Subset Summer</h2>
 
-    {% call render_form(form, action_url='', action_text='Submit', class_='form-horizontal') %}
-      {{ render_field(form.numbers, label_visible=true, placeholder='', type='textarea') }}
-      {{ render_field(form.target, label_visible=false, placeholder='Target Sum', type='input') }}
-    {% endcall %}
+  <div class="row">
+    <div class="col-lg-5">
+      {% call render_form(form, action_url='', action_text='Submit', class_='form-horizontal') %}
+        {{ render_field(form.numbers, label_visible=true, placeholder='E.g., 10 20 30 40', type='textarea') }}
+        {{ render_field(form.target, label_visible=false, placeholder='Target Sum', type='input') }}
+      {% endcall %}
+    </div>
 
-    {% if subset %}
-      <h3>Subset</h3>
-      <div class="success">{{ subset|join(' ') }}</div>
+    <div class="col-lg-1"></div>
+
+    <div class="col-lg-6">
+    {% if error  %}
+      <div class="alert alert-danger" role="alert"><strong>Error:</strong> {{ error }}</div>
+    {% elif subset != None and subset|length == 0 %}
+      <div class="alert alert-warning" role="alert">No subsets found.</div>
+    {% elif subset and subset|length > 0 %}
+      <div class="alert alert-success" role="alert">Subset found!</div>
+      <div class="well">{{ subset|join(' ') }}</div>
+    {% else %}
+      <p>
+        This webpage solves a simple form of the <a href="#">subset sum problem</a>.
+        Submit a list of numbers... Some caveats:
+      </p>
+      <ul>
+        <li>Keep number list to 20 items or less.</li>
+        <li>Runtime is limited to 2 seconds. So the longer your list, the greater the chance for a timeout.</li>
+        <li>List and target should be positive integers.</li>
+        <li>Returns first subset found.</li>
+      </ul>
     {% endif %}
+    </div>
+  </div>
 
 {% endblock %}
