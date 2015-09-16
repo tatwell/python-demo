@@ -1,7 +1,6 @@
 """
     Subset Sum Functions
 """
-from collections import deque
 import time
 
 TIME_LIMIT = 2 # seconds
