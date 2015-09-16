@@ -40,14 +40,15 @@
     </form>
 {%- endmacro %}
 
+
 {% block content %}
   <h2>Subset Summer</h2>
 
   <div class="row">
     <div class="col-lg-5">
       {% call render_form(form, action_url='', action_text='Submit', class_='form-horizontal') %}
-        {{ render_field(form.numbers, label_visible=true, placeholder='E.g., 10 20 30 40', type='textarea') }}
-        {{ render_field(form.target, label_visible=false, placeholder='Target Sum', type='input') }}
+        {{ render_field(form.numbers, type='textarea', label_visible=true, placeholder='E.g., 10 20 30 40', rows='4') }}
+        {{ render_field(form.target, type='input', label_visible=false, placeholder='Target Sum') }}
       {% endcall %}
     </div>
 
@@ -59,7 +60,7 @@
     {% elif subset != None and subset|length == 0 %}
       <div class="alert alert-warning" role="alert">No subsets found.</div>
     {% elif subset and subset|length > 0 %}
-      <div class="alert alert-success" role="alert">Subset found!</div>
+      <div class="alert alert-success" role="alert">Subset found! ({{subset|length}} of {{form.numbers.data|length}} numbers)</div>
       <div class="well">{{ subset|join(' ') }}</div>
     {% else %}
       <p>
@@ -76,8 +77,15 @@
         <li>List and target should be positive integers.</li>
         <li>Returns first subset found.</li>
       </ul>
+
+      <p>To generate a test set, click here:</p>
+      <button id="test" type="submit" class="btn btn-primary">Test</button>
     {% endif %}
     </div>
   </div>
+{% endblock %}
 
+
+{% block javascripts %}
+  <script src="/assets/javascripts/summer.js"></script>
 {% endblock %}
