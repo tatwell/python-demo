@@ -31,7 +31,7 @@ def main_index():
 
 # Arrow API
 # Mainly to test fix for this issue:
-#
+# https://github.com/crsmithdev/arrow/issues/240
 @app.route('/arrow/version')
 def arrow_version():
     return jsonify({

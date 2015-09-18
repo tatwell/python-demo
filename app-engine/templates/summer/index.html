@@ -1,0 +1,98 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Subset Summer{% endblock %}
+
+{# Macros: https://gist.github.com/bearz/7394681 #}
+{% macro render_field(field, label_visible=true) -%}
+
+    <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
+        {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
+            <label for="{{ field.id }}" class="control-label">{{ field.label }}</label>
+        {% endif %}
+        {{ field(class_='form-control', **kwargs) }}
+        {% if field.errors %}
+            {% for e in field.errors %}
+                <p class="help-block">{{ e }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+{%- endmacro %}
+
+{% macro render_form(form, action_url='', action_text='Submit', class_='', btn_class='btn btn-primary') -%}
+
+    <form method="POST" action="{{ action_url }}" role="form" class="{{ class_ }}">
+        {{ form.hidden_tag() if form.hidden_tag }}
+        {% if caller %}
+            {{ caller() }}
+        {% else %}
+            {% for f in form %}
+                {% if f.type == 'BooleanField' %}
+                    {{ render_checkbox_field(f) }}
+                {% elif f.type == 'RadioField' %}
+                    {{ render_radio_field(f) }}
+                {% else %}
+                    {{ render_field(f) }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
+        <a href="/summer" class="btn btn-default">Reset</a>
+    </form>
+{%- endmacro %}
+
+
+{% block content %}
+  <h2>Subset Summer</h2>
+
+  <div class="row">
+    <div class="col-lg-5">
+      {% call render_form(form, action_url='', action_text='Submit', class_='form-horizontal') %}
+        {{ render_field(form.numbers, type='textarea', label_visible=true, placeholder='E.g., 10 20 30 40', rows='4') }}
+        {{ render_field(form.target, type='input', label_visible=false, placeholder='Target Sum') }}
+      {% endcall %}
+    </div>
+
+    <div class="col-lg-1"></div>
+
+    <div class="col-lg-6">
+    {% if error  %}
+      <div class="alert alert-danger" role="alert"><strong>Error:</strong> {{ error }}</div>
+    {% elif subset != None and subset|length == 0 %}
+      <div class="alert alert-warning" role="alert">No subsets found.</div>
+    {% elif subset and subset|length > 0 %}
+      <div class="alert alert-success" role="alert">Subset found! ({{subset|length}} of {{form.numbers.data|length}} numbers)</div>
+      <div class="well">{{ subset|join(' ') }}</div>
+    {% else %}
+      <p>
+        This webpage solves a simple form of the
+        <a href="https://en.wikipedia.org/wiki/Subset_sum_problem" target="_blank">
+        subset sum problem</a>. It implements the diophantine algorithm described
+        <a href="https://web.archive.org/web/20091018234158/http://geocities.com/SiliconValley/Garage/3323/aat/a_diop.html"
+           target="_blank">here</a>.
+      </p>
+
+      <p>Some caveats:</p>
+      <ul>
+        <li>Should be able to easily handle lists of 100 numbers or less.</li>
+        <li>Runtime is limited to 2 seconds. So the longer your list, the greater the chance for a timeout.</li>
+        <li>List and target should be positive integers.</li>
+        <li>Returns first subset found.</li>
+      </ul>
+
+      <p>
+        To see the source code for the subset summing function, click
+        <a href="https://github.com/tatwell/python-demo/blob/czfzlc3e-subset-summer/app-engine/services/summer.py"
+           target="_blank">here</a>.
+      </p>
+
+      <p>To generate a test set, click here:</p>
+      <button id="test" type="submit" class="btn btn-primary">Test</button>
+    {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block javascripts %}
+  <script src="/assets/javascripts/summer.js"></script>
+{% endblock %}

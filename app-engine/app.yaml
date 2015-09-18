@@ -23,6 +23,12 @@ handlers:
   static_dir: assets
   
   #
+  # Summer Handler
+  #
+- url: /summer
+  script: handlers.summer.app
+  
+  #
   # Default
   #
 - url: .*
