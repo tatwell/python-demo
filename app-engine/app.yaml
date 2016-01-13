@@ -4,7 +4,7 @@
 # for details.
 
 # default: production
-version: dev
+version: txf6fcih
 
 application: tatwell-python-demo
 runtime: python27
