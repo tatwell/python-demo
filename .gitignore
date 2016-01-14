@@ -16,3 +16,4 @@
 .dev
 app-engine/.python-version
 app-engine/lib
+app-engine/config/secrets.py

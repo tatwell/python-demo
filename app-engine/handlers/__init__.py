@@ -16,6 +16,8 @@ from os.path import dirname, join
 from flask import Flask, request, render_template
 from flask.json import JSONEncoder
 
+from config import secrets
+
 
 #
 # Constants
@@ -28,6 +30,7 @@ TEMPLATE_PATH = join(APP_PATH, 'templates')
 # Flask App
 #
 app = Flask(__name__, template_folder=TEMPLATE_PATH)
+app.secret_key = secrets.FLASK_SECRET_KEY
 
 
 #

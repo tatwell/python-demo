@@ -29,6 +29,12 @@ handlers:
   script: handlers.summer.app
   
   #
+  # Fingerprint Handler
+  #
+- url: /fingerprints(/.*)?
+  script: handlers.fingerprints.app
+  
+  #
   # Default
   #
 - url: .*
