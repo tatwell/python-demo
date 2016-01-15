@@ -4,7 +4,7 @@
 # for details.
 
 # default: production
-version: czfzlc3e
+version: txf6fcih
 
 application: tatwell-python-demo
 runtime: python27
@@ -27,6 +27,15 @@ handlers:
   #
 - url: /summer
   script: handlers.summer.app
+  
+  #
+  # User Handler
+  #
+- url: /demo/consistency(/.*)?
+  script: handlers.app_users.app
+  
+- url: /demo/interstitial(/.*)?
+  script: handlers.app_users.app
   
   #
   # Default
