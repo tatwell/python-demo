@@ -3,14 +3,20 @@
 """
 import re
 
-from wtforms import Form, validators, StringField, SelectField
+from wtforms import Form, validators, StringField, HiddenField, SelectField
 
+NDB_CONSISTENCY_CHOICES = [
+    ('eventual', 'Eventual (Default)'),
+    ('memcache', 'Memcache-Assisted Pseudo-Strong'),
+    ('interstital', 'Interstital Pseudo-Strong')
+]
 
-class InconsistentFingerprintForm(Form):
-    browser = StringField('Browser Fingerprint')
+class ConsistentFingerprintForm(Form):
+    ip_address = StringField('IP Address')
+    browser = StringField('Current Browser Fingerprint')
+    browserprint = HiddenField('Hidden Browser')
+    stored_browser = StringField('Stored Browser Fingerprint')
     comment = StringField('Comment')
-    consistency = SelectField('Type', choices=[('eventual consistency', 'default'),
-                                               ('memcache consistency', 'memcache'),
-                                               ('interstital', 'interstital')])
+    consistency = SelectField('Consistency Method', choices=NDB_CONSISTENCY_CHOICES)
 
 

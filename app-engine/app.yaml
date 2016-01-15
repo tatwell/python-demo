@@ -29,10 +29,10 @@ handlers:
   script: handlers.summer.app
   
   #
-  # Fingerprint Handler
+  # User Handler
   #
-- url: /fingerprints(/.*)?
-  script: handlers.fingerprints.app
+- url: /demo/consistency(/.*)?
+  script: handlers.app_users.app
   
   #
   # Default
