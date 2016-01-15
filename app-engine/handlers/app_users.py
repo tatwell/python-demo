@@ -38,11 +38,22 @@ def demonstrate_consistency(consistency):
     if user:
         form.stored_browserprint.data = user.browserprint
 
-    # Process request
-    if request.method == 'POST':
+    # Delete
+    if request.method == 'POST' and request.form.get('delete'):
+        ip_address = AppUser.get_ip_address_from_os()
+        user = AppUser.get_by_id(ip_address)
+        if user:
+            user.delete()
+            flash('Deleted user.', 'local')
+        else:
+            flash('User not found', 'local')
+        return redirect(url_for('demonstrate_consistency', consistency='eventual'))
+
+    # Process form
+    elif request.method == 'POST':
         if not form.validate():
             flash('Unable to validate form.', 'local')
-            return redirect(url_for('demonstrate_consistency'))
+            return redirect(url_for('demonstrate_consistency', consistency=consistency))
 
         if consistency == 'memcache':
             return process_using_memcache(request, user)

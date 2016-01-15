@@ -64,9 +64,7 @@ class AppUser(ndb.Model):
 
     @staticmethod
     def create_and_cache(browserprint=None, blank_slate=None):
-        # Create datastore record
-        app_user = AppUser.create(ip_address,
-                                  browserprint,
+        app_user = AppUser.create(browserprint,
                                   blank_slate)
 
         app_user.cache()
@@ -79,6 +77,11 @@ class AppUser(ndb.Model):
     #
     # Instance Methods
     #
+    def delete(self):
+        # This is eventual consistency.
+        self.key.delete()
+        memcache.delete(self.ip_address)
+
     def cache(self):
         # Add or overwrite existing cache record.
         memcache.set(self.ip_address, self)
