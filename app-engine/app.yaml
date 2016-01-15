@@ -34,6 +34,9 @@ handlers:
 - url: /demo/consistency(/.*)?
   script: handlers.app_users.app
   
+- url: /demo/interstitial(/.*)?
+  script: handlers.app_users.app
+  
   #
   # Default
   #

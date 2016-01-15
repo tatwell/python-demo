@@ -33,22 +33,22 @@ class AppUser(ndb.Model):
     # Class Methods
     #
     @staticmethod
-    def find_by_ip_address_inconsistently():
-        ip_address = AppUser.get_ip_address_from_os()
-        return AppUser.query(AppUser.ip_address == ip_address).get()
-
-    @staticmethod
     def find_by_ip_address_consistently():
         ip_address = AppUser.get_ip_address_from_os()
         return AppUser.get_by_id(ip_address)
 
     @staticmethod
-    def find_by_ip_address_pseudo_consistently():
+    def find_by_ip_address_eventually():
+        ip_address = AppUser.get_ip_address_from_os()
+        return AppUser.query(AppUser.ip_address == ip_address).get()
+
+    @staticmethod
+    def find_by_ip_address_pseudo_strongly():
         ip_address = AppUser.get_ip_address_from_os()
         app_user = memcache.get(ip_address)
 
         if not app_user:
-            app_user = AppUser.find_by_ip_address_inconsistently(ip_address)
+            app_user = AppUser.find_by_ip_address_eventually()
 
         return app_user
 
@@ -65,9 +65,9 @@ class AppUser(ndb.Model):
     @staticmethod
     def create_and_cache(browserprint=None, blank_slate=None):
         # Create datastore record
-        app_user = AppUser.create_with_consistency(ip_address,
-                                                   browserprint,
-                                                   blank_slate)
+        app_user = AppUser.create(ip_address,
+                                  browserprint,
+                                  blank_slate)
 
         app_user.cache()
         return app_user
@@ -81,4 +81,4 @@ class AppUser(ndb.Model):
     #
     def cache(self):
         # Add or overwrite existing cache record.
-        memcache.set(app_user.ip_address, app_user)
+        memcache.set(self.ip_address, self)

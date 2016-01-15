@@ -48,7 +48,9 @@
         <div class="col-md-6 consistent-form">
             <h3>Current Datastore Record</h3>
             <p>Consistency issues would manifest here.
-               <a href="{{ url_for('demonstrate_consistency') }}">Click here</a> to reload page.</p>
+               <a href="{{ url_for('demonstrate_consistency', consistency='eventual') }}">
+                Click here</a> to reload page.
+            </p>
             <dl class="dl-horizontal">
                 {% if user: %}
                 <dt>IP Address</dt>

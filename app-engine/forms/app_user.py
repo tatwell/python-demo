@@ -8,7 +8,7 @@ from wtforms import Form, validators, StringField, HiddenField, SelectField
 NDB_CONSISTENCY_CHOICES = [
     ('eventual', 'Eventual (Default)'),
     ('memcache', 'Memcache-Assisted Pseudo-Strong'),
-    ('interstital', 'Interstital Pseudo-Strong')
+    ('interstitial', 'Interstitial Pseudo-Strong')
 ]
 
 class AppUserConsistencyForm(Form):
