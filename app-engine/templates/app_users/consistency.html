@@ -19,7 +19,26 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-6 inconsistent-form">
+        <div class="col-md-4 overview">
+            <h3>Overview</h3>
+            <p>Eventual consistency is a good thing. As the <a href="https://cloud.google.com/datastore/docs/articles/balancing-strong-and-eventual-consistency-with-google-cloud-datastore/#h.w3kz4fze562t">Google documentation</a> notes, it allows the App Engine datastore to offer "high-performance at a very large scale and high-reliability." It just sometimes looks like a real pain-in-the-ass.</p>
+            <p><strong>The problem</strong> is that, to attain that scale, it is necessary for the datastore to introduce latency and asynchronicity that developers, like me, aren't accustomed to having to deal with when I was using MySQL or PostgreSQL. Form processing is a good example of where complications arise.</p>
+            <p>Normally, in processing a form using a MVC-like pattern, I expect a workflow something like this:</p>
+            <p><strong>user submits form ⇒ model creates/updates record ⇒ controller redirects ⇒ server reloads page ⇒ view shows user updated record</strong></p>
+            <p>The problem with eventual consistency is that there is a strong likelihood that the record update won't be complete by the time the user gets redirected to the final view, leaving the user sad and confused. How to deal with this?</p>
+            <p>This page offers a couple different techniques for addressing this problem. Using the form to the right, you can first reproduce the problem by submitting a form using the default eventual consistency option. Then you can verify that the other approaches, which I'm calling pseudo-strong consistency, work around it.</p>
+            <p>I'm using the <a href="https://github.com/GoogleCloudPlatform/appengine-flask-skeleton">Google Cloud Platform Flask Skeleton</a> for this application. All the code for this demo is available from <a href="https://github.com/tatwell/python-demo">my Github repository</a>. The relevant components:</p>
+            <ul>
+                <li><a href="https://github.com/tatwell/python-demo">Model</a></li>
+                <li><a href="https://github.com/tatwell/python-demo">Form Class</a></li>
+                <li><a href="https://github.com/tatwell/python-demo">Handler (Controller)</a></li>
+                <li><a href="https://github.com/tatwell/python-demo">View</a></li>
+            </ul>
+            <p>If you have a better idea or want to contribute to this, please check out my StackOverflow question on the topic.</p>
+            <p>For more information on managing datastore consistency, see <a href="https://cloud.google.com/datastore/docs/articles/balancing-strong-and-eventual-consistency-with-google-cloud-datastore/">this Google article</a>.</p>
+        </div>
+
+        <div class="col-md-4 inconsistent-form">
             <h3><strong>{{ consistency }}</strong> Consistency Form</h3>
             <form method="POST" action="" role="form">
                 {{ form.csrf_token }}
@@ -41,7 +60,7 @@
             </form>
         </div>
 
-        <div class="col-md-6 consistent-form">
+        <div class="col-md-4 datastore-record">
             <h3>Current Datastore Record</h3>
             <p>Consistency issues would manifest here.
                <a href="{{ url_for('demonstrate_consistency', consistency='eventual') }}">
