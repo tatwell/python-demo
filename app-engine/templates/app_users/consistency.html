@@ -1,0 +1,83 @@
+{% extends 'layouts/base.html' %}
+
+{# Macros: https://gist.github.com/bearz/7394681 #}
+{% macro bootstrap_field(field, label_visible=true) -%}
+    <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
+        {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
+            <label for="{{ field.id }}" class="control-label">{{ field.label }}</label>
+        {% endif %}
+        {{ field(class_='form-control', **kwargs) }}
+        {% if field.errors %}
+            {% for e in field.errors %}
+                <p class="help-block">{{ e }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+{%- endmacro %}
+
+{% block title %}App Engine Consistency Demo{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 inconsistent-form">
+            <h3><strong>{{ consistency }}</strong> Consistency Form</h3>
+            <form method="POST" action="" role="form">
+                {{ form.csrf_token }}
+                {{ bootstrap_field(form.ip_address, type='input', disabled=True) }}
+                {{ form.browserprint(id='browserprint') }}
+                {{ bootstrap_field(form.current_browserprint, type='input', id='browser',
+                                   disabled=True, placeholder='Should autofill') }}
+                {{ bootstrap_field(form.stored_browserprint, type='input', disabled=True,
+                                   placeholder='From datastore') }}
+                {{ bootstrap_field(form.blank_slate, type='input',
+                                   placeholder=' Update this field to check consistency.') }}
+                {{ bootstrap_field(form.consistency) }}
+                <input type="submit" class="btn btn-primary" name="save" value="Save">
+                <input type="submit" class="btn btn-danger" name="delete" value="Delete">
+
+                {% with local_flash_messages = get_flashed_messages(category_filter=["local"]) %}
+                {% if local_flash_messages %}
+                    {% for msg in local_flash_messages %}
+                    <span class="local-alert">{{ msg }}</li>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </form>
+        </div>
+
+        <div class="col-md-6 consistent-form">
+            <h3>Current Datastore Record</h3>
+            <p>Consistency issues would manifest here.
+               <a href="{{ url_for('demonstrate_consistency') }}">Click here</a> to reload page.</p>
+            <dl class="dl-horizontal">
+                {% if user: %}
+                <dt>IP Address</dt>
+                <dd>{{ user.ip_address }}</dd>
+
+                <dt>Browser Fingerprint</dt>
+                <dd>{{ user.browserprint }}</dd>
+
+                <dt>Blank Slate</dt>
+                <dd>{{ user.blank_slate }}</dd>
+                {% else: %}
+                <h5>No user saved yet.</h5>
+                {% endif %}
+            </dl>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+  {# https://github.com/Valve/fingerprintjs2 #}
+  <script src="//cdn.jsdelivr.net/fingerprintjs2/1.0.0/fingerprint2.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        new Fingerprint2().get(function(result, components){
+            console.log(result); //a hash, representing your device fingerprint
+            console.log(components); // an array of FP components
+            $('input#browser').val(result);
+            $('input#browserprint').val(result);
+        });
+    });
+  </script>
+{% endblock %}
