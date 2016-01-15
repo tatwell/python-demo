@@ -47,4 +47,4 @@ No tests yet.
 
 To deploy the App Engine application:
 
-    appcfg.py --oauth2 -A python-demo -e YOUR_USER_NAME update ./app-engine
+    appcfg.py -A PROJECT_NAME -e YOUR_USER_NAME update ./app-engine
