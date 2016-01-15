@@ -23,15 +23,11 @@
             <h3><strong>{{ consistency }}</strong> Consistency Form</h3>
             <form method="POST" action="" role="form">
                 {{ form.csrf_token }}
+                {{ bootstrap_field(form.consistency) }}
                 {{ bootstrap_field(form.ip_address, type='input', disabled=True) }}
                 {{ form.browserprint(id='browserprint') }}
-                {{ bootstrap_field(form.current_browserprint, type='input', id='browser',
-                                   disabled=True, placeholder='Should autofill') }}
-                {{ bootstrap_field(form.stored_browserprint, type='input', disabled=True,
-                                   placeholder='From datastore') }}
                 {{ bootstrap_field(form.blank_slate, type='input',
                                    placeholder=' Update this field to check consistency.') }}
-                {{ bootstrap_field(form.consistency) }}
                 <input type="submit" class="btn btn-primary" name="save" value="Save">
                 <input type="submit" class="btn btn-danger" name="delete" value="Delete">
 
