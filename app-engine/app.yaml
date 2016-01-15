@@ -29,6 +29,15 @@ handlers:
   script: handlers.summer.app
   
   #
+  # User Handler
+  #
+- url: /demo/consistency(/.*)?
+  script: handlers.app_users.app
+  
+- url: /demo/interstitial(/.*)?
+  script: handlers.app_users.app
+  
+  #
   # Default
   #
 - url: .*

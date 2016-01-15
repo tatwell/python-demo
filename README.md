@@ -22,6 +22,12 @@ To install:
     cd python-demo/app-engine
     pip install -r requirements.txt -t lib
 
+4. Create secrets file by copying `-dist` version into place:
+
+    cp -v python-demo/app-engine/config/secrets.py{-dist,}
+
+Update secret values in news `secrets.py`.
+
 
 ## Development Server
 
