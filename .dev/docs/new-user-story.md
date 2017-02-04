@@ -18,6 +18,11 @@ When starting a new Trello user story card, add the following comment:
       - Added 0 tasks.
 
     - Run tests.
+    ```
+    Ran 4 tests in 11.460s
+    OK
+    ```
+
     - Check git status.
 
 
