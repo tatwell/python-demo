@@ -19,6 +19,10 @@ handlers:
   #
   # Static directories
   #
+- url: /favicon\.ico
+  static_files: assets/images/favicon.ico
+  upload: assets/images/favicon\.ico
+  
 - url: /assets
   static_dir: assets
   
