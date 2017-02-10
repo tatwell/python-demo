@@ -14,6 +14,8 @@
 
 # Project excludes
 .dev
+app-engine/.coverage
 app-engine/.python-version
+app-engine/nose.cfg
 app-engine/lib
 app-engine/config/secrets.py

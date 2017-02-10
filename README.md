@@ -40,7 +40,28 @@ Application will run on [http://localhost:3000](http://localhost:3000).
 
 ## Tests
 
-No tests yet.
+First, install testing libraries. From project root:
+
+    pip install -r app-engine/requirements-test.txt
+
+Then copy and update the `gae-lib-root` setting in the `nose.cfg` file:
+
+    cp -v app-engine/nose.cfg{-dist,}
+    # Remember to update gae-lib-root setting.
+
+To run tests:
+
+    cd app-engine
+    nosetests -c nose.cfg
+
+With coverage:
+
+    nosetests -c nose.cfg --with-coverage --cover-erase \
+      --cover-package=config,models
+
+To run a single test:
+
+    nosetests -c nose.cfg tests/service/test-summer.py
 
 
 ## Deployment
